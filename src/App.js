@@ -53,10 +53,9 @@ export default function HeroCentered() {
       })
       return
     }
-    console.log(file.name)
     const xlsxFile = new FormData()
     xlsxFile.append("in_file", file)
-    const response = await fetch("http://localhost:8000/uploadxlsx", {
+    const response = await fetch(`http://localhost:8000/uploadxlsx/${type}`, {
       method: "POST",
       body: xlsxFile,
     })

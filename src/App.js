@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography"
 import HeroImage from "./assets/report.svg"
 import NoteAddIcon from "@mui/icons-material/NoteAdd"
 import UpdateIcon from "@mui/icons-material/Update"
-import { useState, useRef, forwardRef, useEffect } from "react"
+import { useState, useRef, forwardRef } from "react"
 import Avatar from "@mui/material/Avatar"
 import Dialog from "@mui/material/Dialog"
 import DialogActions from "@mui/material/DialogActions"
@@ -53,20 +53,19 @@ export default function HeroCentered() {
       })
       return
     }
+    console.log(file.name)
     const xlsxFile = new FormData()
-    xlsxFile.append("file", file)
-    if (true) {
-      setOpenToast(true)
-      setNotification({
-        severity: "success",
-        content: "Done",
-      })
-    }
+    xlsxFile.append("in_file", file)
     const response = await fetch("http://localhost:8000/uploadxlsx", {
       method: "POST",
       body: xlsxFile,
     })
     const res = await response.json()
+    setOpenToast(true)
+    setNotification({
+      severity: "success",
+      content: res.Result,
+    })
     console.log(res)
   }
 
@@ -168,7 +167,9 @@ export default function HeroCentered() {
           <Avatar sx={{ mt: 3 }}>
             <PostAddIcon />
           </Avatar>
-          <DialogTitle id="dialog-title">Deactivate your account</DialogTitle>
+          <DialogTitle id="dialog-title">
+            {file === null ? ".xlsx" : file.name}
+          </DialogTitle>
           <DialogContent>
             <DialogContentText id="dialog-description">
               this action will {type} the content of the database so be careful
